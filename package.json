@@ -2,7 +2,7 @@
   "name": "apisublimarce",
   "version": "1.0.0",
   "description": "Api de app SublimArce",
-  "main": "dbconnection.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
