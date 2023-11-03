@@ -15,10 +15,12 @@ const db = new DataBase();
 const getCamisasRoute = require('./getcamisas');
 const getClientesRoute = require('./getclientes');
 const loginRoute = require('./login');
+const postClientes = require('./postclientes');
 
 app.use('/getcamisas', getCamisasRoute);
 app.use('/getclientes', getClientesRoute);
 app.use('/login', loginRoute);
+app.use('/register', postClientes);
 
 // Puerto en el que se ejecutará la aplicación
 const port = process.env.PORT || 3000;
