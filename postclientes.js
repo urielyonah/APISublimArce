@@ -6,9 +6,9 @@ const db = new DataBase();
 
 router.post('/', (req, res) => {
     const con = db.dbconnection();
-    var correo = req.body.emailController;
-    var nombre = req.body.nameController;
-    var contraseña = req.body.passwordController;
+    var correo = req.body.EMAIL;
+    var nombre = req.body.NAME;
+    var contraseña = req.body.PASSWORD;
     var sql = 'INSERT INTO CLIENTES (NOMBRE, CORREO, CONTRASEÑA) VALUES (?,?,?)';
     con.query(sql, [nombre, correo, contraseña], function(err, results){
         if (err) {
