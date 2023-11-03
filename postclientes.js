@@ -9,7 +9,7 @@ router.post('/', (req, res) => {
     var correo = req.body.Fcorreo;
     var nombre = req.body.Fnombre;
     var contraseña = req.body.Fcontraseña;
-    var sql = 'INSERT INTO clientes (nombre, correo, contraseña) VALUES (?,?,?)';
+    var sql = 'INSERT INTO CLIENTES (NOMBRE, CORREO, CONTRASEÑA) VALUES (?,?,?)';
     con.query(sql, [nombre, correo, contraseña], function(err, results){
         if (err) {
            throw err;
