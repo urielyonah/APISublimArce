@@ -6,11 +6,11 @@ const db = new DataBase();
 
 router.post('/', (req, res) => {
     const con = db.dbconnection();
-    var correo = req.body.email;
-    var nombre = req.body.name;
-    var contraseña = req.body.password;
+    const correo = req.body.email;
+    const nombre = req.body.name;
+    const contraseña = req.body.password;
 
-    var sql = `INSERT INTO CLIENTES (NOMBRE, CORREO, CONTRASEÑA) VALUES ('${nombre}', '${correo}', '${contraseña}')`;
+    const sql = `INSERT INTO CLIENTES (NOMBRE, CORREO, CONTRASEÑA) VALUES ('${nombre}', '${correo}', '${contraseña}')`;
     con.query(sql, (err, results) => {
         if (err) {
            throw err;
