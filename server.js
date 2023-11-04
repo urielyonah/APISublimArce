@@ -22,11 +22,13 @@ const getCamisasRoute = require('./getcamisas');
 const getClientesRoute = require('./getclientes');
 const loginRoute = require('./login');
 const postClientes = require('./postclientes');
+const getProductos = require('./getproductos');
 
 app.use('/getcamisas', getCamisasRoute);
 app.use('/getclientes', getClientesRoute);
 app.use('/login', loginRoute);
 app.use('/register', postClientes);
+app.use('/getproductos', getProductos);
 
 // Puerto en el que se ejecutará la aplicación
 const port = process.env.PORT || 3000;
