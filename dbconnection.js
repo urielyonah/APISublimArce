@@ -3,10 +3,10 @@ const mysql = require('mysql');
 class DataBase {
     constructor() {
         this.config = {
-            host: 'bcmlczdfdr70zryw2gw4-mysql.services.clever-cloud.com',
-            user: 'ujsc8wwbvivjaczz',
-            password: 'OCtsMp6BPrQUDxtoGna2',
-            database: 'bcmlczdfdr70zryw2gw4',
+            host: 'bf9oexmvjv7umifwuwdu-mysql.services.clever-cloud.com',
+            user: 'utykxbwezjt44m3a',
+            password: 'OCs10YTeZ47cnQ1Rwddp',
+            database: 'bf9oexmvjv7umifwuwdu',
             charset: 'utf8',
         };
         this.connection = mysql.createConnection(this.config);
