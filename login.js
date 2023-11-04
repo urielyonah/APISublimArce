@@ -4,6 +4,7 @@ const DataBase = require('./dbconnection');
 
 const db = new DataBase();
 
+
 router.post('/', (req, res) => {
     const con = db.dbconnection();
     const { Email, Contrasena } = req.body;
@@ -17,6 +18,7 @@ router.post('/', (req, res) => {
         } else {
             if (results.length > 0) {
                 const user = results[0];
+                
                 res.json({ message: 'Acceso concedido', user });
             } else {
                 res.json({ message: 'Credenciales incorrectas' });
