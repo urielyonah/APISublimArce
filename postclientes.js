@@ -4,7 +4,7 @@ const DataBase = require('./dbconnection');
 
 const db = new DataBase();
 
-router.post('/', (req, res) => {
+router.post('/register', (req, res) => {
     const con = db.dbconnection();
     const correo = req.body.email;
     const nombre = req.body.name;
