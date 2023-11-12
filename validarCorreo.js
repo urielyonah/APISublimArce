@@ -4,7 +4,7 @@ const DataBase = require('./dbconnection');
 
 const db = new DataBase();
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
     const correo = req.body.email;
 
     if (!email) {
