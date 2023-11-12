@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
     const email = req.body.email;
     if (typeof email === 'string') {
         const result = await db.request()
-            .input('Email', email)
+            .input('email', email)
             .query('SELECT * FROM CLIENTES WHERE CORREO = @email');
 
         if (result.recordset.length > 0) {
