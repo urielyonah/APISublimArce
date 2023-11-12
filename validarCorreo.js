@@ -5,23 +5,19 @@ const DataBase = require('./dbconnection');
 const db = new DataBase();
 
 router.post('/', async (req, res) => {
-    const correo = req.body.email;
+    const email = req.body.email;
+    if (typeof email === 'string') {
+        const result = await db.request()
+            .input('Email', email)
+            .query('SELECT * FROM CLIENTES WHERE CORREO = @email');
 
-    if (!email) {
-        res.status(400).json({ message: 'Missing email parameter' });
-        return;
-    }
-    try {
-        const result = await db.query('SELECT * FROM CLIENTES WHERE CORREO = ?', [correo]);
-
-        if (result.length > 0) {
-            res.status(200).json({ existeCorreo: true });
+        if (result.recordset.length > 0) {
+            res.json(result.recordset);
         } else {
-            res.status(200).json({ existeCorreo: false });
+            res.json({ success: false });
         }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Error en la consulta' });
+    }else{
+       console.log('La cadena no es valida')
     }
 });
 
