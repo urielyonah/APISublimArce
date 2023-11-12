@@ -4,7 +4,7 @@ const DataBase = require('./dbconnection');
 
 const db = new DataBase();
 
-router.get('/validarCorreo', async (req, res) => {
+router.get('/', async (req, res) => {
     const correo = req.body.email;
 
     if (!email) {
