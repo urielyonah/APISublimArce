@@ -9,8 +9,10 @@ router.post('/', (req, res) => {
     const correo = req.body.email;
     const nombre = req.body.name;
     const contraseña = req.body.password;
+    const telefono = req.body.telefono;
+    const direccion = req.body.direccion
 
-    const sql = `INSERT INTO CLIENTES (NOMBRE, CORREO, CONTRASEÑA) VALUES ('${nombre}', '${correo}', '${contraseña}')`;
+    const sql = `INSERT INTO CLIENTES (NOMBRE, CORREO, CONTRASEÑA, TELEFONO, DIRECCION) VALUES ('${nombre}', '${correo}', '${contraseña}', '${telefono}', '${direccion}')`;
     con.query(sql, (err, results) => {
         if (err) {
            throw err;
