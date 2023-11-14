@@ -4,7 +4,7 @@ const DataBase = require('./dbconnection');
 
 const db = new DataBase();
 
-router.get('/', (req, res) => {
+router.get('/clientes', (req, res) => {
     const con = db.dbconnection();
     con.query('SELECT * FROM CLIENTES', (err, results) => {
         if (err) {
