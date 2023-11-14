@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
         } else {
             res.status(200).json(results);
             console.log('Numero de registros insertados: ' + results.affectedRows);
-            console.log(nombre, correo, contraseña);
+            console.log(nombre, correo, contraseña, telefono, direccion);
         }
     });
 });
