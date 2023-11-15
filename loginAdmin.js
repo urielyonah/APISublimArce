@@ -7,11 +7,11 @@ const db = new DataBase();
 
 router.post('/', (req, res) => {
     const con = db.dbconnection();
-    const Email = req.body.IS-email;
-    const Password = req.body.IS-password;
+    const email = req.body.IS-email;
+    const password = req.body.IS-password;
 
     const sql = 'SELECT * FROM ADMINISTRADORES WHERE CORREO = ? AND CONTRASEÑA = ?';
-    const values = [Email, Password];
+    const values = [email, password];
 
     con.query(sql, values, (err, results) => {
         if (err) {
