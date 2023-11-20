@@ -32,7 +32,7 @@ app.use('/login', loginRoute);
 app.use('/register', postClientes);
 app.use('/getproductos', getProductos);
 app.use('/loginAdmin', loginAdministrator);
-app.use('/pedido', getPedido);
+app.use('/pedido:userId', getPedido);
 
 // Puerto en el que se ejecutará la aplicación
 const port = process.env.PORT || 3000;
