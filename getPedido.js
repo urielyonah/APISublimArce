@@ -4,7 +4,7 @@ const DataBase = require('./dbconnection');
 
 const db = new DataBase();
 
-router.get('/', (req, res) => {
+router.get('/:userId', (req, res) => {
     const con = db.dbconnection();
 
     // Obtener userId de la sesión
