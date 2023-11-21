@@ -26,7 +26,7 @@ const getProductos = require('./getproductos');
 const loginAdministrator = require('./loginAdmin');
 const getPedido = require('./getPedido');
 const postPedidos = require('./postPedidos');
-const postServicios = require('./postServicios');
+const postServicios = require('./postServicio');
 
 app.use('/getcamisas', getCamisasRoute);
 app.use('/getclientes', getClientesRoute);
