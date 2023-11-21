@@ -5,55 +5,57 @@ const DataBase = require('./dbconnection');
 const db = new DataBase();
 
 router.post('/', async (req, res) => {
-  const con = db.dbconnection();
-
-  const idCamisa = req.body.idCamisa;
-  const tamano = req.body.tamano;
-  const servicio = req.body.servicio;
-  const area = req.body.area;
-  const calidad = req.body.calidad;
-  const imagen = req.body.imagen;
-  const precio = req.body.precio;
-
-  //insertar en la tabla SERVICIOS
-  const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES ('${tipo}', '${tamano}', '${calidad}','${area}','${precio}', '${imagen}')`;
-    con.query(sql, (err, results) => {
-        if (err) {
-           throw err;
-        } else {
-            res.status(200).json(results);
-        }
+    try {
+        const con = db.dbconnection();
+    
+        const idCamisa = req.body.idCamisa;
+        const tamano = req.body.tamano;
+        const servicio = req.body.servicio;
+        const area = req.body.area;
+        const calidad = req.body.calidad;
+        const imagen = req.body.imagen;
+        const precio = req.body.precio;
+    
+        // Insertar en la tabla SERVICIOS
+        const servicioId = await insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
+    
+        // Insertar en la tabla CAMISAS-SERVICIOS
+        await insertarCamisasServicios(con, idCamisa, servicioId, precio);
+    
+        res.status(200).json({ message: 'Agregado a pedidos con éxito' });
+      } catch (error) {
+        console.error('Error al agregar a pedidos:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+      }
     });
-  // Insertar en la tabla CAMISAS-SERVICIOS
-  const sqlInsertServicio = `INSERT INTO CAMISAS-SERVICIOS (ID-CAMISAS, ID-SERVICIOS, PRECIO) VALUES (${idCamisa}, ${getIdServicio(servicio, tamano, area, calidad)}, ${precio})`;
-
-  con.query(sqlInsertServicio, (err, result) => {
-    if (err) {
-      throw err;
-    } else {
-      res.status(200).json(result);
-    }
-  });
-});
-
-// Función para obtener el ID de servicio
-function getIdServicio(servicio, tamano, area, calidad) {
-  const sqlGetIdServicio = `SELECT ID-SERVICIOS FROM SERVICIOS WHERE TIPO-SERVICIO = '${servicio}' AND tamaño = '${tamano}' AND AREA = '${area}' AND calidad = '${calidad}'`;
-  con.query(sqlGetIdServicio, (err, result) => {
-    if (err) {
-      throw err;
-    } else {
-        if (result && result.length > 0) {
-            resolve(result[0]['ID-SERVICIOS']);
+    
+    // Función para insertar en la tabla SERVICIOS y obtener el ID del servicio insertado
+    function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
+      return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO SERVICIOS (TIPO_SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
+        con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
+          if (err) {
+            reject(err);
           } else {
-            // Si no hay resultados, puedes manejarlo de acuerdo a tus necesidades
-            reject('Servicio no encontrado');
+            resolve(results.insertId);
           }
+        });
+      });
     }
-  });
-  // Debes implementar la lógica para obtener el ID del servicio de la base de datos
-  // y devolverlo.
-  // Puedes usar una función similar a la que usaste para insertar en la tabla SERVICIOS.
+    
+    // Función para insertar en la tabla CAMISAS_SERVICIOS
+    function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
+      return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO CAMISAS_SERVICIOS (ID_CAMISAS, ID_SERVICIOS, PRECIO) VALUES (?, ?, ?)`;
+        con.query(sql, [idCamisa, idServicio, precio], (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        });
+      });
+  
 }
 
 module.exports = router;
