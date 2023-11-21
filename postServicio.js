@@ -3,7 +3,7 @@ const router = express.Router();
 const DataBase = require('./dbconnection');
 const db = new DataBase();
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
     try {
         const con = db.dbconnection();
 
@@ -16,10 +16,10 @@ router.post('/', async (req, res) => {
         const precio = req.body.precio;
 
         // Insertar en la tabla SERVICIOS
-        const servicioId = await insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
+        const servicioId = insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
 
         // Insertar en la tabla CAMISAS-SERVICIOS
-        await insertarCamisasServicios(con, idCamisa, servicioId, precio);
+        insertarCamisasServicios(con, idCamisa, servicioId, precio);
 
         res.status(200).json({ message: 'Agregado a pedidos con éxito' });
     } catch (error) {
@@ -33,31 +33,27 @@ router.post('/', async (req, res) => {
 // Función para insertar en la tabla SERVICIOS y obtener el ID del servicio insertado
 function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
     const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
-    
-    return new Promise((resolve, reject) => {
-        con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(results.insertId);
-            }
-        });
+    con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
+        if (err) {
+            throw err;
+        } else {
+            res.status(200).json(results);
+            res.status(200).json(results.insertId);
+        }
     });
+    
 }
 
 // Función para insertar en la tabla CAMISAS_SERVICIOS
 function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
     const sql = `INSERT INTO CAMISAS-SERVICIOS (ID-CAMISAS, ID-SERVICIOS, PRECIO) VALUES (?, ?, ?)`;
-
-    return new Promise((resolve, reject) => {
         con.query(sql, [idCamisa, idServicio, precio], (err, result) => {
             if (err) {
-                reject(err);
+                throw err;
             } else {
-                resolve(result);
+                res.status(200).json(result);
             }
         });
-    });
 }
 
 module.exports = router;
