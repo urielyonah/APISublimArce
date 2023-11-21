@@ -34,7 +34,7 @@ app.use('/login', loginRoute);
 app.use('/register', postClientes);
 app.use('/getproductos', getProductos);
 app.use('/loginAdmin', loginAdministrator);
-app.use('/pedido', getPedido);
+app.use('/pedido/:userId', getPedido);
 
 app.use('/postPedidos', postPedidos);
 app.use('/postServicios', postServicios);
