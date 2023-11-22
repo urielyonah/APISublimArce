@@ -5,7 +5,7 @@ const db = new DataBase();
 
 
 // Función para insertar en la tabla SERVICIOS
-function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
+function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen, res) {
     const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
     con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
         if (err) {
@@ -37,7 +37,8 @@ router.post('/', (req, res) => {
         const precio = req.body.precio;
 
         // Insertar en la tabla SERVICIOS
-        insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
+        insertarServicio(con, servicio, tamano, calidad, area, precio, imagen, res);
+        console.log('Agregado al carrito:', idCamisa, 'talla:', tamano, ', color:', color, ', servicio:', servicio, ', area:', area);
         res.status(200).json({ message: 'Agregado a pedidos con éxito' });
     } catch (error) {
         console.error('Error al agregar a pedidos:', error);
