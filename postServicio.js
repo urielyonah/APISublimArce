@@ -3,7 +3,7 @@ const router = express.Router();
 const DataBase = require('./dbconnection');
 const db = new DataBase();
 
-// Función para insertar en la tabla SERVICIOS y obtener el ID del servicio insertado
+// Función para insertar en la tabla SERVICIOS
 function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
@@ -12,14 +12,14 @@ function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
                 console.error('Error al insertar servicio:', err);
                 reject(err);
             } else {
-                resolve(results.insertId);
+                resolve(results);
             }
         });
     });
 }
 
 // Función para insertar en la tabla CAMISAS_SERVICIOS
-function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
+/*function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO CAMISAS-SERVICIOS (ID-CAMISAS, ID-SERVICIOS, PRECIO) VALUES (?, ?, ?)`;
         con.query(sql, [idCamisa, idServicio, precio], (err, result) => {
@@ -31,7 +31,7 @@ function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
             }
         });
     });
-}
+}*/
 
 // Luego en tu ruta POST
 router.post('/', async (req, res) => {
@@ -47,12 +47,12 @@ router.post('/', async (req, res) => {
         const precio = req.body.precio;
 
         // Insertar en la tabla SERVICIOS
-        const servicioId = await insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
+        /*const servicioId =*/ await insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
 
         // Insertar en la tabla CAMISAS_SERVICIOS
-        await insertarCamisasServicios(con, idCamisa, servicioId, precio);
+        //await insertarCamisasServicios(con, idCamisa, servicioId, precio);
 
-        res.status(200).json({ message: 'Agregado a pedidos con éxito', servicioId });
+        res.status(200).json({ message: 'Agregado a pedidos con éxito'});
     } catch (error) {
         console.error('Error al agregar a pedidos:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
