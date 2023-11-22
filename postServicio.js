@@ -5,7 +5,7 @@ const db = new DataBase();
 
 
 // Función para insertar en la tabla SERVICIOS
-function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
+function insertarServicio(con, res, tipo, tamano, calidad, area, precio, imagen) {
     const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
     con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
         if (err) {
