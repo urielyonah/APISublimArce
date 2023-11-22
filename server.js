@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+//const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
 
@@ -13,7 +13,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
-app.use(cors());
+//app.use(cors());
 
 // Conexión a la base de datos (utiliza tu configuración)
 const DataBase = require('./dbconnection');
