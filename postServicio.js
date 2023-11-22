@@ -3,18 +3,21 @@ const router = express.Router();
 const DataBase = require('./dbconnection');
 const db = new DataBase();
 
+
 // Función para insertar en la tabla SERVICIOS
 function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
-        const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
-        con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
-            if (err) {
-                throw err;
-            } else {
-                res.status(200).json(results);
-                console.log(tamano, servicio, calidad, area, precio);
-            }
-        });
+    const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
+    con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
+        if (err) {
+            console.error('Error al insertar servicio:', err);
+            res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
+        } else {
+            console.log(tamano, tipo, calidad, area, precio);
+            res.status(200).json({ message: 'Agregado a pedidos con éxito' });
+        }
+    });
 }
+
 
 // Luego en tu ruta POST
 router.post('/', (req, res) => {
@@ -30,16 +33,17 @@ router.post('/', (req, res) => {
         const precio = req.body.precio;
 
         // Insertar en la tabla SERVICIOS
-       insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
+        insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
         res.status(200).json({ message: 'Agregado a pedidos con éxito' });
     } catch (error) {
         console.error('Error al agregar a pedidos:', error);
-        res.status(500).json(error);
+        res.status(500).json({ error: 'Error interno del servidor' });
     } finally {
-        con.end(); // Asegúrate de cerrar la conexión en cualquier caso
+        if (con) {
+            con.end(); // Asegúrate de cerrar la conexión en cualquier caso
+        }
     }
 });
 
-
-
 module.exports = router;
+
