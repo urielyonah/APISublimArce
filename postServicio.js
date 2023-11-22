@@ -13,7 +13,7 @@ function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
             res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
         } else {
             console.log(tamano, tipo, calidad, area, precio);
-            res.status(200).json({ message: 'Agregado a pedidos con éxito' });
+            res.status(200).json(results);
         }
     });
 }
@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
         const precio = req.body.precio;
 
         // Insertar en la tabla SERVICIOS
-        insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
+        insertarServicio(con, res, servicio, tamano, calidad, area, precio, imagen);
         res.status(200).json({ message: 'Agregado a pedidos con éxito' });
     } catch (error) {
         console.error('Error al agregar a pedidos:', error);
