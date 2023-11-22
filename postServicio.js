@@ -6,15 +6,15 @@ const db = new DataBase();
 
 // Función para insertar en la tabla SERVICIOS
 function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen, res) {
-    const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO SERVICIOS (TIPO_SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
     con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
         if (err) {
             console.error('Error al insertar servicio:', err);
             res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
         } else {
-            console.log('Inserción exitosa en SERVICIOS. Resultados:', results);
-            console.log('Filas afectadas:', results.affectedRows);
-            console.log('ID del último insertado:', results.insertId);
+            console.log('Inserción exitosa en SERVICIOS. Resultados:'+ results);
+            console.log('Filas afectadas:'+ results.affectedRows);
+            console.log('ID del último insertado:'+ results.insertId);
             console.log(tamano, tipo, calidad, area, precio);
             res.status(200).json(results);
         }
