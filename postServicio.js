@@ -8,7 +8,6 @@ function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
         const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
         con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
             if (err) {
-                console.error('Error al insertar servicio:', err);
                 throw err;
             } else {
                 res.status(200).json(results);
