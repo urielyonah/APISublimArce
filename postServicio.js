@@ -49,7 +49,7 @@ function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
     const sql = `INSERT INTO CAMISAS-SERVICIOS (ID-CAMISAS, ID-SERVICIOS, PRECIO) VALUES (?, ?, ?)`;
         con.query(sql, [idCamisa, idServicio, precio], (err, result) => {
             if (err) {
-                console.error('Error:', err);
+                console.error('Error setService:', err);
                 res.status(500).json({ error: 'Error interno del servidor al insertar a la tabla CAMISAS-SERVICIOS' });
             } else {
                 res.status(200).json(result);
