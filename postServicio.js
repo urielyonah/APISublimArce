@@ -35,21 +35,22 @@ function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
     const sql = `INSERT INTO SERVICIOS (TIPO-SERVICIO, tamaño, calidad, AREA, PRECIO, IMAGEN) VALUES (?, ?, ?, ?, ?, ?)`;
     con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
         if (err) {
-            throw err;
+            console.error('Error al insertar servicio:', err);
+            res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
         } else {
-            res.status(200).json(results);
-            res.status(200).json(results.insertId);
+            res.status(200).json({ servicioId: results.insertId });
         }
     });
-    
 }
+
 
 // Función para insertar en la tabla CAMISAS_SERVICIOS
 function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
     const sql = `INSERT INTO CAMISAS-SERVICIOS (ID-CAMISAS, ID-SERVICIOS, PRECIO) VALUES (?, ?, ?)`;
         con.query(sql, [idCamisa, idServicio, precio], (err, result) => {
             if (err) {
-                throw err;
+                console.error('Error:', err);
+                res.status(500).json({ error: 'Error interno del servidor al insertar a la tabla CAMISAS-SERVICIOS' });
             } else {
                 res.status(200).json(result);
             }
