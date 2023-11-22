@@ -12,11 +12,15 @@ function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
             console.error('Error al insertar servicio:', err);
             res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
         } else {
+            console.log('Inserción exitosa en SERVICIOS. Resultados:', results);
+            console.log('Filas afectadas:', results.affectedRows);
+            console.log('ID del último insertado:', results.insertId);
             console.log(tamano, tipo, calidad, area, precio);
             res.status(200).json(results);
         }
     });
 }
+
 
 
 // Luego en tu ruta POST
