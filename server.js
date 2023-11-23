@@ -36,6 +36,7 @@ const loginAdministrator = require('./loginAdmin');
 const getPedido = require('./getPedido');
 const postPedidos = require('./postPedidos');
 const postServicios = require('./postServicio');
+const editarPerfil = require('./EditarPerfil');
 
 app.use('/getcamisas', getCamisasRoute);
 app.use('/getclientes', getClientesRoute);
@@ -44,7 +45,7 @@ app.use('/register', postClientes);
 app.use('/getproductos', getProductos);
 app.use('/loginAdmin', loginAdministrator);
 app.use('/pedido', getPedido);
-
+app.use('/editarPerfil', editarPerfil);
 app.use('/postPedidos', postPedidos);
 app.use('/postServicios', postServicios);
 
