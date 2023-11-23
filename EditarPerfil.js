@@ -12,7 +12,7 @@ router.put('/:userId', (req, res) => {
     const query = 'UPDATE CLIENTES SET CORREO = ?, CONTRASEÑA = ?, NOMBRE = ?, TELEFONO = ?, DIRECCION = ?  WHERE ID-CLIENTE = ?';
     con.query(query, [datos.email, datos.password, datos.name, datos.phone, datos.address, userId], (err, results) => {
         if (err) {
-            console.error('Error al actualizar los datos en la base de datos:', error);
+            console.error('Error al actualizar los datos en la base de datos:', err);
         res.status(500).json({ mensaje: 'Error al actualizar el cliente en la base de datos' });
         return;
         } else {
