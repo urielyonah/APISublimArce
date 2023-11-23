@@ -1,5 +1,9 @@
 const express = require('express');
+<<<<<<< HEAD
 const session = require('express-session');
+=======
+//const cors = require('cors');
+>>>>>>> 4ebaaf5546e3fb8782213f8616d45679ec552cb3
 const app = express();
 const bodyParser = require('body-parser');
 
@@ -13,6 +17,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
+//app.use(cors());
 
 app.use(session({
   secret: 'secreto', // Cambia esto a una cadena secreta más segura
@@ -32,6 +37,8 @@ const postClientes = require('./postclientes');
 const getProductos = require('./getproductos');
 const loginAdministrator = require('./loginAdmin');
 const getPedido = require('./getPedido');
+const postPedidos = require('./postPedidos');
+const postServicios = require('./postServicio');
 
 app.use('/getcamisas', getCamisasRoute);
 app.use('/getclientes', getClientesRoute);
@@ -40,6 +47,9 @@ app.use('/register', postClientes);
 app.use('/getproductos', getProductos);
 app.use('/loginAdmin', loginAdministrator);
 app.use('/pedido', getPedido);
+
+app.use('/postPedidos', postPedidos);
+app.use('/postServicios', postServicios);
 
 // Puerto en el que se ejecutará la aplicación
 const port = process.env.PORT || 3000;
