@@ -1,9 +1,5 @@
 const express = require('express');
-<<<<<<< HEAD
-const session = require('express-session');
-=======
 //const cors = require('cors');
->>>>>>> 4ebaaf5546e3fb8782213f8616d45679ec552cb3
 const app = express();
 const bodyParser = require('body-parser');
 
