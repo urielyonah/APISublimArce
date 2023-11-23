@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const app = express();
 const bodyParser = require('body-parser');
 
@@ -12,6 +13,12 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
+
+app.use(session({
+  secret: 'secreto', // Cambia esto a una cadena secreta más segura
+  resave: false,
+  saveUninitialized: false,
+}));
 
 // Conexión a la base de datos (utiliza tu configuración)
 const DataBase = require('./dbconnection');
@@ -32,7 +39,7 @@ app.use('/login', loginRoute);
 app.use('/register', postClientes);
 app.use('/getproductos', getProductos);
 app.use('/loginAdmin', loginAdministrator);
-app.use('/pedido/:userId', getPedido);
+app.use('/pedido', getPedido);
 
 // Puerto en el que se ejecutará la aplicación
 const port = process.env.PORT || 3000;

@@ -6,9 +6,9 @@ const DataBase = require('./dbconnection');
 const db = new DataBase();
 
 router.use(session({
-    secret: 'tu_secreto', // Cambia esto a una cadena secreta más segura
+    secret: 'secreto', // Cambia esto a una cadena secreta más segura
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
   }));
 
 

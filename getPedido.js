@@ -4,29 +4,29 @@ const DataBase = require('./dbconnection');
 
 const db = new DataBase();
 
+// Middleware para verificar la autenticación
+
+
+// Ruta protegida
 router.get('/:userId', (req, res) => {
+    const userId = req.params.userId; // Obtener userId de los parámetros de la URL
+    console.log("ID de Usuario:", userId);
+
     const con = db.dbconnection();
-
-    // Obtener userId de la sesión
-    const userId = req.session.userId;
-
-    if (!userId) {
-        res.status(401).json({ message: 'Usuario no autenticado' });
-        return;
-    }
-
-    const sql = 'SELECT * FROM PEDIDOS WHERE ID-CLIENTE = ?';
+    const sql = 'SELECT * FROM PEDIDOS WHERE `ID-CLIENTE` = ?';
     const values = [userId];
 
     con.query(sql, values, (err, results) => {
         if (err) {
-            res.status(500).json({ message: 'Error en la consulta' });
+            console.error(err);
+            res.status(500).json({ message: 'Error en la consulta', error: err.message });
         } else {
             if (results.length > 0) {
                 const user = results[0];
-                res.json({ message: 'Acceso concedido', user });
+                console.log("Acceso concedido");
+                res.json({ user });
             } else {
-                res.json({ message: 'Credenciales incorrectas' });
+                res.json({ message: 'No se encontraron pedidos para el usuario con ID proporcionado' });
             }
         }
     });
