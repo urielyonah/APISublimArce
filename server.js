@@ -36,11 +36,8 @@ const loginAdministrator = require('./loginAdmin');
 const getPedido = require('./getPedido');
 const postPedidos = require('./postPedidos');
 const postServicios = require('./postServicio');
-<<<<<<< HEAD
 const insertarproductoapedidos = require('./insertarproductoapedidos');
-=======
 const editarPerfil = require('./EditarPerfil');
->>>>>>> 3b5b7f65748d896ecf8f7c5fe5ba5c68ff3d18d8
 
 app.use('/getcamisas', getCamisasRoute);
 app.use('/getclientes', getClientesRoute);
