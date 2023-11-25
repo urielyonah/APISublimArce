@@ -6,15 +6,20 @@ const db = new DataBase();
 
 router.post('/', (req, res) => {
     const con = db.dbconnection();
-    const idproducto = req.body.idproducto;
+    const idproducto = req.body.idproducto; // Asegúrate de que el nombre de la propiedad coincida con el frontend
     const cantidad = req.body.cantidad;
-    const precio = req.body.precio
-    const idcliente = req.body.idcliente;
+    const precio = req.body.precio;
+    const userId = req.params.userId; // Asegúrate de que el nombre de la propiedad coincida con el frontend
 
-    const sql = `INSERT INTO PEDIDOS (ID-PEDIDOS, ID-CAMISAS-SERVICIOS, ID-PRODUCTOS, CANTIDAD, PRECIO, STATUS, ID-CLIENTE) VALUES ('${nombre}', '${correo}', '${contraseña}','${telefono}','${direccion}')`;
+    const sql = `
+      INSERT INTO PEDIDOS (ID-CAMISAS-SERVICIOS, ID-PRODUCTOS, CANTIDAD, PRECIO, STATUS, ID-CLIENTE)
+      VALUES (NULL, '${idproducto}', '${cantidad}', '${precio}', 'PENDIENTE', '${userId}')
+    `;
+
     con.query(sql, (err, results) => {
         if (err) {
-           throw err;
+           console.error(err);
+           res.status(500).send('Error interno del servidor');
         } else {
             res.status(200).json(results);
         }
