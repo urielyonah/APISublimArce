@@ -1,5 +1,6 @@
 const express = require('express');
 //const cors = require('cors');
+const session = require('express-session');
 const app = express();
 const bodyParser = require('body-parser');
 
@@ -15,6 +16,12 @@ app.use((req, res, next) => {
 });
 //app.use(cors());
 
+app.use(session({
+  secret: 'secreto', // Cambia esto a una cadena secreta más segura
+  resave: false,
+  saveUninitialized: false,
+}));
+
 // Conexión a la base de datos (utiliza tu configuración)
 const DataBase = require('./dbconnection');
 const db = new DataBase();
@@ -29,7 +36,11 @@ const loginAdministrator = require('./loginAdmin');
 const getPedido = require('./getPedido');
 const postPedidos = require('./postPedidos');
 const postServicios = require('./postServicio');
+<<<<<<< HEAD
 const insertarproductoapedidos = require('./insertarproductoapedidos');
+=======
+const editarPerfil = require('./EditarPerfil');
+>>>>>>> 3b5b7f65748d896ecf8f7c5fe5ba5c68ff3d18d8
 
 app.use('/getcamisas', getCamisasRoute);
 app.use('/getclientes', getClientesRoute);
@@ -37,8 +48,8 @@ app.use('/login', loginRoute);
 app.use('/register', postClientes);
 app.use('/getproductos', getProductos);
 app.use('/loginAdmin', loginAdministrator);
-app.use('/pedido/:userId', getPedido);
-
+app.use('/pedido', getPedido);
+app.use('/editarPerfil', editarPerfil);
 app.use('/postPedidos', postPedidos);
 app.use('/postServicios', postServicios);
 app.use('/insertarproductoapedidos', insertarproductoapedidos);
