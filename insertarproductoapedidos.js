@@ -12,7 +12,7 @@ router.post('/', (req, res) => {
     const userId = req.params.idcliente; // Asegúrate de que el nombre de la propiedad coincida con el frontend
 
     const sql = `
-      INSERT INTO PEDIDOS (ID-CAMISAS-SERVICIOS, ID-PRODUCTOS, CANTIDAD, PRECIO, STATUS, ID-CLIENTE)
+    INSERT INTO PEDIDOS ('ID-CAMISAS-SERVICIOS', 'ID-PRODUCTOS', 'CANTIDA', 'PRECIO', 'STATUS', 'ID-CLIENTE')
       VALUES (NULL, '${idproducto}', '${cantidad}', '${precio}', 'PENDIENTE', '${userId}')
     `;
 
