@@ -9,7 +9,7 @@ router.post('/', (req, res) => {
     const idproducto = req.body.idproducto; // Asegúrate de que el nombre de la propiedad coincida con el frontend
     const cantidad = req.body.cantidad;
     const precio = req.body.precio;
-    const userId = req.params.idcliente; // Asegúrate de que el nombre de la propiedad coincida con el frontend
+    const userId = req.body.idcliente; // Asegúrate de que el nombre de la propiedad coincida con el frontend
 
     const sql = `
     INSERT INTO PEDIDOS ('ID-CAMISAS-SERVICIOS', 'ID-PRODUCTOS', 'CANTIDA', 'PRECIO', 'STATUS', 'ID-CLIENTE')
