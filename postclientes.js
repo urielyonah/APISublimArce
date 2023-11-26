@@ -22,6 +22,7 @@ router.post('/', (req, res) => {
             console.log(nombre, correo, contraseña, telefono, direccion);
         }
     });
+    con.end();
 });
 
 module.exports = router;

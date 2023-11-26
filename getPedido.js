@@ -30,6 +30,8 @@ router.get('/:userId', (req, res) => {
             }
         }
     });
+
+    con.end();
 });
 
 module.exports = router;

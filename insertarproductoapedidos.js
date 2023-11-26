@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
     const precio = req.body.precio;
     const userId = req.body.idcliente; // Asegúrate de que el nombre de la propiedad coincida con el frontend
 
-    const sql = `INSERT INTO PEDIDOS (\`ID-CAMISAS-SERVICIOS\`, \`ID-PRODUCTOS\`, \`CANTIDA\`, \`PRECIO\`, \`STATUS\`, \`ID-CLIENTE\`)
+    const sql = `INSERT INTO PEDIDOS (\`ID-CAMISAS-SERVICIOS\`, \`ID-PRODUCTOS\`, \`CANTIDAD\`, \`PRECIO\`, \`STATUS\`, \`ID-CLIENTE\`)
   VALUES (NULL, '${idproducto}', '${cantidad}', '${precio}', 'PENDIENTE', '${userId}');`;
 
 
@@ -23,6 +23,8 @@ router.post('/', (req, res) => {
             res.status(200).json(results);
         }
     });
+
+    con.end();
 });
 
 module.exports = router;

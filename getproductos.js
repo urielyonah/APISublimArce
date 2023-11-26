@@ -13,6 +13,7 @@ router.get('/', (req, res) => {
             res.json(results);
         }
     });
+    con.end();
 });
 
 module.exports = router;

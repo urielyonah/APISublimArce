@@ -20,6 +20,7 @@ router.put('/:userId', (req, res) => {
             res.json(results);
         }
     });
+    con.end();
 });
 
 module.exports = router;
