@@ -43,8 +43,6 @@ router.post('/', (req, res) => {
     try {
         const con = db.dbconnection();
 
-        const idServicioInsertado = results.insertId;
-        //const idServicio = req.body.DataBase.idServicio;
         const idCamisa = req.body.idCamisa;
         const tamano = req.body.tamano;
         const servicio = req.body.servicio;
