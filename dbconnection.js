@@ -2,7 +2,6 @@ const mysql = require('mysql');
 
 class DataBase {
     constructor() {
-     
         this.config = {
             host: 'bf9oexmvjv7umifwuwdu-mysql.services.clever-cloud.com',
             user: 'utykxbwezjt44m3a',
