@@ -13,7 +13,8 @@ router.get('/:userId', (req, res) => {
     console.log("ID de Usuario:", userId);
 
     const con = db.dbconnection();
-    const sql = 'SELECT * FROM PEDIDOS WHERE `ID-CLIENTE` = ?';
+    const sql = 'SELECT p.`ID-PEDIDOS`, p.CANTIDAD, p.PRECIO, p.STATUS, c.`ID-CAMISAS-SERVICIOS`, cs.`ID-CAMISAS`, cs.`ID-SERVICIOS`, cs.PRECIO AS `PRECIO-CAMISAS-SERVICIOS`, camisas.*, servicios.*, pr.`NOMBRE` AS `NOMBRE-PRODUCTOS` FROM PEDIDOS p LEFT JOIN `CAMISAS-SERVICIOS` c ON p.`ID-CAMISAS-SERVICIOS` = c.`ID-CAMISAS-SERVICIOS` LEFT JOIN `CAMISAS-SERVICIOS` cs ON p.`ID-CAMISAS-SERVICIOS` = cs.`ID-CAMISAS-SERVICIOS` LEFT JOIN `CAMISAS` camisas ON cs.`ID-CAMISAS` = camisas.`ID-CAMISAS` LEFT JOIN `SERVICIOS` servicios ON cs.`ID-SERVICIOS` = servicios.`ID-SERVICIOS` LEFT JOIN PRODUCTOS pr ON p.`ID-PRODUCTOS` = pr.`ID-PRODUCTOS` WHERE p.`ID-CLIENTE` = ?';
+
     const values = [userId];
 
     con.query(sql, values, (err, results) => {
@@ -22,16 +23,12 @@ router.get('/:userId', (req, res) => {
             res.status(500).json({ message: 'Error en la consulta', error: err.message });
         } else {
             if (results.length > 0) {
-                const user = results[0];
-                console.log("Acceso concedido");
-                res.json({ user });
+                res.json({ pedidos: results });
             } else {
                 res.json({ message: 'No se encontraron pedidos para el usuario con ID proporcionado' });
             }
         }
     });
-
-    con.end();
 });
 
 module.exports = router;

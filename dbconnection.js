@@ -2,7 +2,7 @@ const mysql = require('mysql');
 
 class DataBase {
     constructor() {
-       /* this.config = {
+       /*this.config = {
             host: 'localhost',
             user: 'uriel',
             password: '123456789',
