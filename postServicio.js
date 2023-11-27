@@ -14,10 +14,8 @@ function insertarServicio(con, idCamisa, tipo, tamano, calidad, area, precio, im
             res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
         } else {
             const idServicioInsertado = results.insertId;
-            console.log('Inserción exitosa en SERVICIOS. Resultados:'+ results);
-            console.log('Filas afectadas:'+ results.affectedRows);
+            console.log('Inserción exitosa en SERVICIOS. Resultados:'+ results.body);
             console.log('ID del último insertado:'+ idServicioInsertado);
-            console.log(tamano, tipo, calidad, area, precio);
 
             //Insertar a la tabla CAMISAS-SERVICIOS
             insertarCamisasServicios(con, idCamisa, idServicioInsertado, precio);
@@ -53,7 +51,7 @@ router.post('/', (req, res) => {
 
         // Insertar en la tabla SERVICIOS
         insertarServicio(con, idCamisa, servicio, tamano, calidad, area, precio, imagen);
-        console.log('Agregado al carrito:', idCamisa, 'talla:', tamano, ', color:', color, ', servicio:', servicio, ', area:', area);
+        console.log('Agregado al carrito:', idCamisa, 'talla:', tamano, ', servicio:', servicio, ', area:', area);
         
         res.status(200).json({ message: 'Agregado a pedidos con éxito' });
     } catch (error) {
