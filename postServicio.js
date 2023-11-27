@@ -29,9 +29,9 @@ function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
         con.query(sql, [idCamisa, idServicio, precio], (err, result) => {
             if (err) {
                 console.error('Error setService:', err);
-                reject(err);
+                throw err;
             } else {
-                resolve(result);
+                res.status(200).json(result);
             }
         });
 }
