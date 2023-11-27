@@ -21,7 +21,7 @@ function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
 
             //Insertar a la tabla CAMISAS-SERVICIOS
             insertarCamisasServicios(con, idCamisa, idServicioInsertado, precio);
-            res.status(200).json(results);
+            
         }
     });
 }
