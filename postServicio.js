@@ -25,7 +25,7 @@ function insertarServicio(con, idCamisa, tipo, tamano, calidad, area, precio, im
 }
 
 function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
-        const sql = `INSERT INTO CAMISAS-SERVICIOS (\`ID-CAMISAS\`, \`ID-SERVICIOS\`, \`PRECIO\`) VALUES (?, ?, ?)`;
+        const sql = `INSERT INTO \`CAMISAS-SERVICIOS\` (\`ID-CAMISAS\`, \`ID-SERVICIOS\`, \`PRECIO\`) VALUES (?, ?, ?)`;
         con.query(sql, [idCamisa, idServicio, precio], (err, result) => {
             if (err) {
                 console.error('Error setService:', err);
