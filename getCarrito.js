@@ -23,9 +23,9 @@ router.get('/:userId', (req, res) => {
             res.status(500).json({ message: 'Error en la consulta', error: err.message });
         } else {
             if (results.length > 0) {
-                res.json({ pedidos: results });
+                res.json({ carrito: results });
             } else {
-                res.json({ message: 'No se encontraron pedidos para el usuario con ID proporcionado' });
+                res.json({ message: 'No se encontraron prouctos en el carrito para el usuario con ID proporcionado' });
             }
         }
     });
