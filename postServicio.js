@@ -5,7 +5,7 @@ const db = new DataBase();
 
 
 // Función para insertar en la tabla SERVICIOS
-function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
+function insertarServicio(con, idCamisa, tipo, tamano, calidad, area, precio, imagen) {
     const sql = `INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`)
     VALUES (?, ?, ?, ?, ?, ?)`;
     con.query(sql, [tipo, tamano, calidad, area, precio, imagen], (err, results) => {
@@ -14,26 +14,24 @@ function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
             res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
         } else {
             const idServicioInsertado = results.insertId;
-            console.log('Inserción exitosa en SERVICIOS. Resultados:'+ results);
-            console.log('Filas afectadas:'+ results.affectedRows);
+            console.log('Inserción exitosa en SERVICIOS. Resultados:'+ results.body);
             console.log('ID del último insertado:'+ idServicioInsertado);
-            console.log(tamano, tipo, calidad, area, precio);
 
             //Insertar a la tabla CAMISAS-SERVICIOS
             insertarCamisasServicios(con, idCamisa, idServicioInsertado, precio);
-            res.status(200).json(results);
+            
         }
     });
 }
 
 function insertarCamisasServicios(con, idCamisa, idServicio, precio) {
-        const sql = `INSERT INTO CAMISAS-SERVICIOS (\`ID-CAMISAS\`, \`ID-SERVICIOS\`, \`PRECIO\`) VALUES (?, ?, ?)`;
+        const sql = `INSERT INTO \`CAMISAS-SERVICIOS\` (\`ID-CAMISAS\`, \`ID-SERVICIOS\`, \`PRECIO\`) VALUES (?, ?, ?)`;
         con.query(sql, [idCamisa, idServicio, precio], (err, result) => {
             if (err) {
                 console.error('Error setService:', err);
-                reject(err);
+                throw err;
             } else {
-                resolve(result);
+                res.status(200).json(result);
             }
         });
 }
@@ -52,8 +50,8 @@ router.post('/', (req, res) => {
         const precio = req.body.precio;
 
         // Insertar en la tabla SERVICIOS
-        insertarServicio(con, servicio, tamano, calidad, area, precio, imagen);
-        console.log('Agregado al carrito:', idCamisa, 'talla:', tamano, ', color:', color, ', servicio:', servicio, ', area:', area);
+        insertarServicio(con, idCamisa, servicio, tamano, calidad, area, precio, imagen);
+        console.log('Agregado al carrito:', idCamisa, 'talla:', tamano, ', servicio:', servicio, ', area:', area);
         
         res.status(200).json({ message: 'Agregado a pedidos con éxito' });
     } catch (error) {
