@@ -4,8 +4,8 @@ const router = express.Router();
 const DataBase = require('./dbconnection');
 const bcrypt = require('bcrypt');
 
+// Crear una instancia de la clase DataBase
 const db = new DataBase();
-const pool = require('./dbconnection');
 
 router.use(session({
     secret: 'secreto', // Cambia esto a una cadena secreta más segura
@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     let con; // Definir la variable con fuera del bloque try
 
     try {
-        con = await pool.getConnection();
+        con = await db.dbconnection(); // Usar la instancia de la clase DataBase para obtener la conexión
         const { Email, Contrasena } = req.body;
 
         const sql = 'SELECT * FROM CLIENTES WHERE CORREO = ?';
