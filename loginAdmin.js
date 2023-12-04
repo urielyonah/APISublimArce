@@ -19,8 +19,8 @@ router.post('/', (req, res) => {
         } else {
             if (results.length > 0) {
                 const user = results[0];
-                res.json({ message: 'Acceso concedido', user });
-                res.redirect('/inicio');
+                //res.json({ message: 'Acceso concedido', user });
+                res.redirect('inicio.html');
             } else {
                 res.json({ message: 'Credenciales incorrectas' });
             }
