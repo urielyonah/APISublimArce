@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const DataBase = require('./dbconnection');
+
 const db = new DataBase();
+const pool = db.dbconnection();
 
 router.put('/', async (req, res) => {
     const pedidoIds = req.body.pedidoIds;

@@ -4,6 +4,7 @@ const DataBase = require('./dbconnection');
 const bcrypt = require('bcrypt');
 
 const db = new DataBase();
+const pool = db.dbconnection();
 
 router.post('/', (req, res) => {
     try {

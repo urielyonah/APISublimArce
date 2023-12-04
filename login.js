@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 
 // Crear una instancia de la clase DataBase
 const db = new DataBase();
+const pool = db.dbconnection();
 
 router.use(session({
     secret: 'secreto', // Cambia esto a una cadena secreta más segura
@@ -30,7 +31,7 @@ router.post('/', async (req, res) => {
                 console.error(err);
                 res.status(500).json({ message: 'Error en la consulta' });
             } else {
-                // Resto del código sigue igual
+                res.status(200).json(results);
             }
         });
     } catch (error) {

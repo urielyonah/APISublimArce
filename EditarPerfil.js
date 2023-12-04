@@ -3,6 +3,7 @@ const router = express.Router();
 const DataBase = require('./dbconnection');
 
 const db = new DataBase();
+const pool = db.dbconnection();
 
 router.put('/:userId', (req, res) => {
     try {

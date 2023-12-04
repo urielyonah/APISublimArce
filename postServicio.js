@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const DataBase = require('./dbconnection');
+
 const db = new DataBase();
+const pool = db.dbconnection();
 
 // Función para insertar en la tabla SERVICIOS
 function insertarServicio(con, idCamisa, tipo, tamano, calidad, area, precio, imagen) {

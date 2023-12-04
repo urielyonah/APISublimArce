@@ -3,6 +3,7 @@ const router = express.Router();
 const DataBase = require('./dbconnection');
 
 const db = new DataBase();
+const pool = db.dbconnection();
 
 router.get('/', (req, res) => {
     // Declaro la conexión aquí para que esté disponible en el bloque finally
