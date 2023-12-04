@@ -8,6 +8,7 @@ class DataBase {
             password: 'OCs10YTeZ47cnQ1Rwddp',
             database: 'bf9oexmvjv7umifwuwdu',
             charset: 'utf8',
+            connectionLimit: 5,
         });
     }
 
