@@ -16,40 +16,40 @@ router.use(session({
 
 router.post('/', async (req, res) => {
     try {
-        const con = db.dbconnection();
-        const { Email, Contrasena } = req.body;
-
-        const sql = 'SELECT * FROM CLIENTES WHERE CORREO = ?';
-        const values = [Email];
-
-        con.query(sql, values, async (err, results) => {
-            if (err) {
-                console.error(err);
-                res.status(500).json({ message: 'Error en la consulta' });
+      const con = db.dbconnection();
+      const { Email, Contrasena } = req.body;
+  
+      const sql = 'SELECT * FROM CLIENTES WHERE CORREO = ?';
+      const values = [Email];
+  
+      con.query(sql, values, async (err, results) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ message: 'Error en la consulta' });
+        } else {
+          if (results.length > 0) {
+            const user = results[0];
+            const match = await bcrypt.compare(Contrasena, user.CONTRASEÑA);
+  
+            if (match) {
+              req.session.userId = user['ID-CLIENTE'];
+              res.json({ message: 'Acceso concedido', user });
             } else {
-                if (results.length > 0) {
-                    const user = results[0];
-                    const match = await bcrypt.compare(Contrasena, user.CONTRASEÑA);
-
-                    if (match) {
-                        req.session.userId = user['ID-CLIENTE'];
-                        res.json({ message: 'Acceso concedido', user });
-                    } else {
-                        res.json({ message: 'Credenciales incorrectas' });
-                    }
-                } else {
-                    res.json({ message: 'Credenciales incorrectas' });
-                }
+              res.json({ message: 'Credenciales incorrectas' });
             }
-        });
-    } catch (error) {
-        console.error('Error en la conexión a la base de datos:', error);
-        res.status(500).json({ message: 'Error interno del servidor' });
-    } finally {
-        if (con) {
-            con.end();
+          } else {
+            res.json({ message: 'Credenciales incorrectas' });
+          }
         }
+      });
+    } catch (error) {
+      console.error('Error en la conexión a la base de datos:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    } finally {
+      if (con) {
+        con.end();
+      }
     }
-});
+  });
 
 module.exports = router;
