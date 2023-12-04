@@ -5,6 +5,7 @@ const DataBase = require('./dbconnection');
 const bcrypt = require('bcrypt');
 
 const db = new DataBase();
+const pool = require('./dbconnection');
 
 router.use(session({
     secret: 'secreto', // Cambia esto a una cadena secreta más segura
@@ -18,7 +19,7 @@ router.post('/', async (req, res) => {
     let con; // Definir la variable con fuera del bloque try
 
     try {
-        con = db.dbconnection();
+        con = await pool.getConnection();
         const { Email, Contrasena } = req.body;
 
         const sql = 'SELECT * FROM CLIENTES WHERE CORREO = ?';
@@ -37,7 +38,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     } finally {
         if (con) {
-            con.end();
+            con.release();
         }
     }
 });
