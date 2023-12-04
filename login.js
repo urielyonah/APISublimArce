@@ -9,21 +9,21 @@ const db = new DataBase();
 const pool = db.dbconnection();
 
 router.use(session({
-    secret: 'secreto', // Cambia esto a una cadena secreta más segura
+    secret: 'secreto',
     resave: false,
     saveUninitialized: false,
-    secure: true, // Configura esto según tus necesidades
-    httpOnly: true, // Configura esto según tus necesidades
+    secure: true,
+    httpOnly: true,
 }));
 
 router.post('/', async (req, res) => {
-    let con; // Definir la variable con fuera del bloque try
+    let con;
 
     try {
-        con = await db.dbconnection(); // Usar la instancia de la clase DataBase para obtener la conexión
+        con = await pool.getConnection();
         const { Email, Contrasena } = req.body;
 
-        const sql = 'SELECT * FROM CLIENTES WHERE CORREO = ?';
+        const sql = 'SELECT ID_CLIENTE, CORREO, CONTRASENA FROM CLIENTES WHERE CORREO = ?';
         const values = [Email];
 
         con.query(sql, values, async (err, results) => {
@@ -31,7 +31,19 @@ router.post('/', async (req, res) => {
                 console.error(err);
                 res.status(500).json({ message: 'Error en la consulta' });
             } else {
-                res.status(200).json(results);
+                if (results.length > 0) {
+                    const user = results[0];
+                    const match = await bcrypt.compare(Contrasena, user.CONTRASENA);
+
+                    if (match) {
+                        req.session.userId = user.ID_CLIENTE;
+                        res.status(200).json({ message: 'Acceso concedido', user });
+                    } else {
+                        res.status(401).json({ message: 'Credenciales incorrectas' });
+                    }
+                } else {
+                    res.status(401).json({ message: 'Credenciales incorrectas' });
+                }
             }
         });
     } catch (error) {
@@ -39,7 +51,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     } finally {
         if (con) {
-            con.end();
+            con.release();
         }
     }
 });
