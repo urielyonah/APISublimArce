@@ -11,8 +11,12 @@ router.put('/', (req, res) => {
     const con = db.dbconnection();
     const nuevoEstado = 'PENDIENTE'; // Reemplaza 'NUEVO ESTADO' con el estado deseado
 
-    const sql = 'UPDATE PEDIDOS SET STATUS = ? WHERE `ID-PEDIDOS` = ?';
-    const values = [nuevoEstado, pedidoIds];
+    // Generar un marcador de posición (?) para cada ID en la lista
+    const placeholders = pedidoIds.map(() => '?').join(', ');
+    const sql = `UPDATE PEDIDOS SET STATUS = ? WHERE \`ID-PEDIDOS\` IN (${placeholders})`;
+    
+    // Combina el nuevo estado con la lista de IDs
+    const values = [nuevoEstado, ...pedidoIds];
 
     con.query(sql, values, (err, results) => {
         if (err) {
