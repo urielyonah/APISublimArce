@@ -4,16 +4,24 @@ const DataBase = require('./dbconnection');
 
 const db = new DataBase();
 
+// Ruta protegida
 router.get('/', (req, res) => {
-    const con = db.dbconnection();
-    con.query('SELECT * FROM CLIENTES', (err, results) => {
-        if (err) {
-            res.status(500).json({ message: 'Error en la consulta' });
-        } else {
-            res.json(results);
-        }
-    });
-    con.end();
+    try {
+        const con = db.dbconnection();
+        con.query('SELECT * FROM CLIENTES', (err, results) => {
+            if (err) {
+                res.status(500).json({ message: 'Error en la consulta', error: err.message });
+            } else {
+                res.json(results);
+            }
+
+            // Cierra la conexión después de completar la consulta
+            con.end();
+        });
+    } catch (error) {
+        console.error('Error en la conexión a la base de datos:', error);
+        res.status(500).json({ message: 'Error en la conexión a la base de datos', error: error.message });
+    }
 });
 
 module.exports = router;

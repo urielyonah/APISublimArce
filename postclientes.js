@@ -1,28 +1,40 @@
 const express = require('express');
 const router = express.Router();
 const DataBase = require('./dbconnection');
+const bcrypt = require('bcrypt');
 
 const db = new DataBase();
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const con = db.dbconnection();
-    const correo = req.body.email;
-    const nombre = req.body.name;
-    const contraseña = req.body.password;
-    const telefono = req.body.phone;
-    const direccion = req.body.address;
+    
+    try {
+        const { email, name, password, phone, address } = req.body;
 
-    const sql = `INSERT INTO CLIENTES (NOMBRE, CORREO, CONTRASEÑA, TELEFONO, DIRECCION) VALUES ('${nombre}', '${correo}', '${contraseña}','${telefono}','${direccion}')`;
-    con.query(sql, (err, results) => {
-        if (err) {
-           throw err;
-        } else {
-            res.status(200).json(results);
-            console.log('Numero de registros insertados: ' + results.affectedRows);
-            console.log(nombre, correo, contraseña, telefono, direccion);
+        // Hash de la contraseña antes de almacenarla
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const sql = 'INSERT INTO CLIENTES (NOMBRE, CORREO, CONTRASEÑA, TELEFONO, DIRECCION) VALUES (?, ?, ?, ?, ?)';
+        const values = [name, email, hashedPassword, phone, address];
+
+        con.query(sql, values, (err, results) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ message: 'Error en la consulta', error: err.message });
+            } else {
+                res.status(200).json(results);
+                console.log('Número de registros insertados:', results.affectedRows);
+                console.log('Datos insertados:', { name, email, password: '****', phone, address });
+            }
+        });
+    } catch (error) {
+        console.error('Error en la conexión a la base de datos:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    } finally {
+        if (con) {
+            con.end();
         }
-    });
-    con.end();
+    }
 });
 
 module.exports = router;

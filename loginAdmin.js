@@ -1,31 +1,47 @@
 const express = require('express');
 const router = express.Router();
 const DataBase = require('./dbconnection');
+const bcrypt = require('bcrypt');
 
 const db = new DataBase();
 
-
 router.post('/', (req, res) => {
-    const con = db.dbconnection();
-    const email = req.body.IS_email;
-    const password = req.body.IS_password;
+    try {
+        const con = db.dbconnection();
+        const email = req.body.IS_email;
+        const password = req.body.IS_password;
 
-    const sql = 'SELECT * FROM ADMINISTRADORES WHERE CORREO = ? AND CONTRASEÑA = ?';
-    const values = [email, password];
+        const sql = 'SELECT * FROM ADMINISTRADORES WHERE CORREO = ?';
+        const values = [email];
 
-    con.query(sql, values, (err, results) => {
-        if (err) {
-            res.status(500).json({ message: 'Error en la consulta' });
-        } else {
-            if (results.length > 0) {
-                const user = results[0];
-                //res.json({ message: 'Acceso concedido', user });
-                res.redirect('inicio.html');
+        con.query(sql, values, async (err, results) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ message: 'Error en la consulta' });
             } else {
-                res.json({ message: 'Credenciales incorrectas' });
+                if (results.length > 0) {
+                    const admin = results[0];
+                    const match = await bcrypt.compare(password, admin.CONTRASEÑA);
+
+                    if (match) {
+                        // Acceso concedido, puedes devolver un mensaje JSON si es necesario
+                        res.json({ message: 'Acceso concedido', admin });
+                    } else {
+                        res.json({ message: 'Credenciales incorrectas' });
+                    }
+                } else {
+                    res.json({ message: 'Credenciales incorrectas' });
+                }
             }
+        });
+    } catch (error) {
+        console.error('Error en la conexión a la base de datos:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    } finally {
+        if (con) {
+            con.end();
         }
-    });
+    }
 });
 
 module.exports = router;
