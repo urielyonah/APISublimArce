@@ -4,14 +4,15 @@ const DataBase = require('./dbconnection');
 
 const db = new DataBase();
 
-router.put('/:pedidoId', (req, res) => {
-    const pedidoId = req.params.pedidoId;
+router.put('/', (req, res) => {
+    
+    const pedidoIds = req.body.pedidoIds;
 
     const con = db.dbconnection();
     const nuevoEstado = 'PENDIENTE'; // Reemplaza 'NUEVO ESTADO' con el estado deseado
 
     const sql = 'UPDATE PEDIDOS SET STATUS = ? WHERE `ID-PEDIDOS` = ?';
-    const values = [nuevoEstado, pedidoId];
+    const values = [nuevoEstado, pedidoIds];
 
     con.query(sql, values, (err, results) => {
         if (err) {
