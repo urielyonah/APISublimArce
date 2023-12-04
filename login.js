@@ -21,6 +21,11 @@ router.post('/', async (req, res) => {
 
     try {
         con = await pool.getConnection();
+
+        if (!con) {
+            throw new Error('Error al obtener la conexión de la base de datos.');
+        }
+
         const { Email, Contrasena } = req.body;
 
         const sql = 'SELECT ID_CLIENTE, CORREO, CONTRASENA FROM CLIENTES WHERE CORREO = ?';
