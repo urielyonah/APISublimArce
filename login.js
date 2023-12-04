@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     } finally {
         if (con) {
-            con.release();
+            con.end();
         }
     }
 });
