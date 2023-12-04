@@ -39,6 +39,7 @@ const postPedidos = require('./postPedidos');
 const postServicios = require('./postServicio');
 const insertarproductoapedidos = require('./insertarproductoapedidos');
 const editarPerfil = require('./EditarPerfil');
+const cambiarStatus = require('./putStatus');
 
 app.use('/getcamisas', getCamisasRoute);
 app.use('/getclientes', getClientesRoute);
@@ -52,6 +53,7 @@ app.use('/editarPerfil', editarPerfil);
 app.use('/postPedidos', postPedidos);
 app.use('/postServicios', postServicios);
 app.use('/insertarproductoapedidos', insertarproductoapedidos);
+app.use('/cambiarStatus',cambiarStatus);
 
 // Puerto en el que se ejecutará la aplicación
 const port = process.env.PORT || 3000;
