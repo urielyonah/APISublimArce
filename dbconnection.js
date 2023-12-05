@@ -2,18 +2,18 @@ const mysql = require('mysql');
 
 class DataBase {
     constructor() {
-        this.pool = mysql.createPool({
+        this.config = {
             host: 'bf9oexmvjv7umifwuwdu-mysql.services.clever-cloud.com',
             user: 'utykxbwezjt44m3a',
             password: 'OCs10YTeZ47cnQ1Rwddp',
             database: 'bf9oexmvjv7umifwuwdu',
             charset: 'utf8',
-            connectionLimit: 5,
-        });
+        };
+        this.connection = mysql.createConnection(this.config);
     }
 
     dbconnection() {
-        return this.pool;
+        return this.connection;
     }
 }
 

@@ -2,63 +2,38 @@ const express = require('express');
 const session = require('express-session');
 const router = express.Router();
 const DataBase = require('./dbconnection');
-const bcrypt = require('bcrypt');
 
-// Crear una instancia de la clase DataBase
 const db = new DataBase();
-const pool = db.dbconnection();
 
 router.use(session({
-    secret: 'secreto',
+    secret: 'secreto', // Cambia esto a una cadena secreta más segura
     resave: false,
     saveUninitialized: false,
-    secure: true,
-    httpOnly: true,
-}));
+  }));
 
-router.post('/', async (req, res) => {
-    let con;
 
-    try {
-        con = await pool.getConnection();
+router.post('/', (req, res) => {
+    const con = db.dbconnection();
+    const { Email, Contrasena } = req.body;
 
-        if (!con) {
-            throw new Error('Error al obtener la conexión de la base de datos.');
-        }
+    const sql = 'SELECT * FROM CLIENTES WHERE CORREO = ? AND CONTRASEÑA = ?';
+    const values = [Email, Contrasena];
 
-        const { Email, Contrasena } = req.body;
-
-        const sql = 'SELECT ID_CLIENTE, CORREO, CONTRASENA FROM CLIENTES WHERE CORREO = ?';
-        const values = [Email];
-
-        con.query(sql, values, async (err, results) => {
-            if (err) {
-                console.error(err);
-                res.status(500).json({ message: 'Error en la consulta' });
+    con.query(sql, values, (err, results) => {
+        if (err) {
+            res.status(500).json({ message: 'Error en la consulta' });
+        } else {
+            if (results.length > 0) {
+                const user = results[0];
+                const usuarioId = results[0].id_alumno;
+                req.session.userId = usuarioId;
+                
+                res.json({ message: 'Acceso concedido', user });
             } else {
-                if (results.length > 0) {
-                    const user = results[0];
-                    const match = await bcrypt.compare(Contrasena, user.CONTRASENA);
-
-                    if (match) {
-                        req.session.userId = user.ID_CLIENTE;
-                        res.status(200).json({ message: 'Acceso concedido', user });
-                    } else {
-                        res.status(401).json({ message: 'Credenciales incorrectas' });
-                    }
-                } else {
-                    res.status(401).json({ message: 'Credenciales incorrectas' });
-                }
+                res.json({ message: 'Credenciales incorrectas' });
             }
-        });
-    } catch (error) {
-        console.error('Error en la conexión a la base de datos:', error);
-        res.status(500).json({ message: 'Error interno del servidor' });
-    } finally {
-        if (con) {
-            con.release();
         }
-    }
+    });
 });
 
 module.exports = router;
