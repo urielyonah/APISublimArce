@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
     con.query('SELECT * FROM CAMISAS', (err, results) => {
         if (err) {
-            res.status(500).json({ message: 'Error en la consulta' });
+            res.status(500).json({ error: 'Error en la consulta', details: err.message });
         } else {
             res.json(results);
         }
