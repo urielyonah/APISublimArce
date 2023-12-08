@@ -6,13 +6,23 @@ const db = new DataBase();
 
 router.get('/', (req, res) => {
     const con = db.dbconnection();
+
+    if (!con) {
+        res.status(500).json({ message: 'Error en la conexión' });
+        return;
+    }
+
     con.query('SELECT * FROM CAMISAS', (err, results) => {
         if (err) {
             res.status(500).json({ message: 'Error en la consulta' });
         } else {
             res.json(results);
         }
-        con.end();
+
+        // Check if the connection is still open before trying to close it
+        if (con.state !== 'disconnected') {
+            con.end();
+        }
     });
 });
 
