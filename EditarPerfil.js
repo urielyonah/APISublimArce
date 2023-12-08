@@ -19,8 +19,8 @@ router.put('/:userId', (req, res) => {
             res.json({ mensaje: 'Usuario actualizado correctamente' });
             res.json(results);
         }
+        con.end();
     });
-    con.end();
 });
 
 module.exports = router;

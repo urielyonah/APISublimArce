@@ -30,6 +30,7 @@ router.get('/:userId', (req, res) => {
                 res.json({ message: 'No se encontraron pedidos para el usuario con ID proporcionado' });
             }
         }
+        con.end();
     });
 });
 

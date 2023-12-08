@@ -29,6 +29,7 @@ router.get('/:userId', (req, res) => {
                 res.json({ message: 'No se encontraron prouctos en el carrito para el usuario con ID proporcionado' });
             }
         }
+        con.end();
     });
 });
 
