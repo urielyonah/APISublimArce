@@ -19,10 +19,8 @@ router.get('/', (req, res) => {
             res.json(results);
         }
 
-        // Check if the connection is still open before trying to close it
-        if (con.state !== 'disconnected') {
-            con.end();
-        }
+        // Always close the connection after the query
+        con.end();
     });
 });
 
