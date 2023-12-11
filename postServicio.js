@@ -7,7 +7,6 @@ router.post('/', async (req, res) => {
     const con = db.dbconnection();
 
     try {
-        const idCamisa = req.body.idCamisa;
         const tipo = req.body.servicio;
         const tamano = req.body.tamano;
         const calidad = req.body.calidad;
@@ -21,13 +20,12 @@ router.post('/', async (req, res) => {
         try {
             // Insertar en la tabla SERVICIOS
             const resultsInsert = await con.query(
-                `INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`)
-                VALUES (?, ?, ?, ?, ?, ?);`,
+                'INSERT INTO SERVICIOS (`TIPO-SERVICIO`, `tamaño`, `calidad`, `AREA`, `PRECIO`, `IMAGEN`) VALUES (?, ?, ?, ?, ?, ?)',
                 [tipo, tamano, calidad, area, precio, imagen]
             );
 
             // Obtener el último ID insertado
-            const resultsId = await con.query('SELECT LAST_INSERT_ID() AS insertId;');
+            const resultsId = await con.query('SELECT LAST_INSERT_ID() AS insertId');
 
             if (resultsInsert.affectedRows > 0 && resultsId.length > 0 && resultsId[0].insertId !== undefined) {
                 const idServicioInsertado = resultsId[0].insertId;
@@ -51,6 +49,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     } finally {
         if (con) {
+            // Close the connection after everything is done
             con.end();
         }
     }
