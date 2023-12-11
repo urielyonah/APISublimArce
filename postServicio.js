@@ -57,4 +57,5 @@ async function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen
     }
 }
 
+
 module.exports = router;
