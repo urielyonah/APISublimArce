@@ -36,22 +36,26 @@ router.post('/', async (req, res) => {
 });
 
 async function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
-    const sql = `
-        INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`)
-        VALUES (?, ?, ?, ?, ?, ?);
-        SELECT LAST_INSERT_ID() AS insertId;
-    `;
+    const sql = `INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`) VALUES (?, ?, ?, ?, ?, ?)`;
 
     try {
         const results = await con.query(sql, [tipo, tamano, calidad, area, precio, imagen]);
 
-        if (results[1].length > 0 && results[1][0].insertId !== undefined) {
-            const idServicioInsertado = results[1][0].insertId;
-            console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', idServicioInsertado);
-            return idServicioInsertado;
+        if (results.affectedRows > 0) {
+            // La inserción fue exitosa, ahora obtenemos el último ID insertado
+            const idQuery = 'SELECT LAST_INSERT_ID() AS insertId';
+            const idResults = await con.query(idQuery);
+
+            if (idResults.length > 0 && idResults[0].insertId !== undefined) {
+                const idServicioInsertado = idResults[0].insertId;
+                console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', idServicioInsertado);
+                return idServicioInsertado;
+            } else {
+                console.error('Error al obtener el último ID insertado.');
+                return null;
+            }
         } else {
             console.error('Error en la inserción en SERVICIOS. No se afectaron filas.');
-            console.error('Detalles del error:', results[0].message);
             return null;
         }
     } catch (error) {
