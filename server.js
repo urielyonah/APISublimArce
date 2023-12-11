@@ -43,6 +43,7 @@ const cambiarStatus = require('./putStatus');
 const deleteCarrito = require('./deleteCarrito');
 const PostCamisasServiciosPedidos = require('./POSTcamisaPedidos');
 const PostCamisasServicios = require('./postCAMISAS-SERVICIOS');
+const getCamisasServicios = require('./getCamisasServicios');
 
 app.use('/getcamisas', getCamisasRoute);
 app.use('/getclientes', getClientesRoute);
@@ -60,7 +61,7 @@ app.use('/cambiarStatus',cambiarStatus);
 app.use('/deleteCarrito', deleteCarrito);
 app.use('/postCamisaServiciosPedidos', PostCamisasServiciosPedidos);
 app.use('/postCamisasServicios', PostCamisasServicios);
-
+app.use('/getCamisasServicios', getCamisasServicios);
 
 // Puerto en el que se ejecutará la aplicación
 const port = process.env.PORT || 3000;
