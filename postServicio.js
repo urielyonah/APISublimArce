@@ -36,27 +36,28 @@ router.post('/', async (req, res) => {
 });
 
 async function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
-    const sql = `INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`)
-VALUES (?, ?, ?, ?, ?, ?)`;
+    const sql = `
+        INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`)
+        VALUES (?, ?, ?, ?, ?, ?);
+        SELECT LAST_INSERT_ID() AS insertId;
+    `;
 
-try {
-    const results = await con.query(sql, [tipo, tamano, calidad, area, precio, imagen]);
+    try {
+        const results = await con.query(sql, [tipo, tamano, calidad, area, precio, imagen]);
 
-    if (results.affectedRows > 0) {
-        // Obtén el último ID insertado directamente desde la base de datos
-        const idServicioInsertado = await con.query('SELECT LAST_INSERT_ID() as id');
-        const lastInsertId = idServicioInsertado[0].id;
-
-        console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', lastInsertId);
-        return lastInsertId;
-    } else {
-        console.error('Error en la inserción en SERVICIOS. No se afectaron filas.');
-        return null;
+        if (results[1].length > 0 && results[1][0].insertId !== undefined) {
+            const idServicioInsertado = results[1][0].insertId;
+            console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', idServicioInsertado);
+            return idServicioInsertado;
+        } else {
+            console.error('Error en la inserción en SERVICIOS. No se afectaron filas.');
+            console.error('Detalles del error:', results[0].message);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error al insertar servicio:', error);
+        throw error;
     }
-} catch (error) {
-    console.error('Error al insertar servicio:', error);
-    throw error;
-}
 }
 
 module.exports = router;
