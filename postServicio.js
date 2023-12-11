@@ -15,18 +15,22 @@ router.post('/', async (req, res) => {
         const precio = req.body.precio;
         const imagen = req.body.imagen;
 
-        // Insertar en la tabla SERVICIOS y obtener el último ID insertado
-        const results = await con.query(
-            `INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`) VALUES (?, ?, ?, ?, ?, ?); SELECT LAST_INSERT_ID() AS insertId;`,
+        // Insertar en la tabla SERVICIOS
+        const resultsInsert = await con.query(
+            `INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`)
+            VALUES (?, ?, ?, ?, ?, ?);`,
             [tipo, tamano, calidad, area, precio, imagen]
         );
 
-        if (results[0].affectedRows > 0) {
-            const idServicioInsertado = results[1][0].insertId;
+        // Obtener el último ID insertado
+        const resultsId = await con.query('SELECT LAST_INSERT_ID() AS insertId;');
+
+        if (resultsInsert.affectedRows > 0 && resultsId.length > 0 && resultsId[0].insertId !== undefined) {
+            const idServicioInsertado = resultsId[0].insertId;
             console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', idServicioInsertado);
             res.status(200).json({ 'ID-SERVICIOS': idServicioInsertado, message: 'Agregado a SERVICIOS con éxito' });
         } else {
-            console.error('Error en la inserción en SERVICIOS. No se afectaron filas.');
+            console.error('Error en la inserción en SERVICIOS. No se afectaron filas o no se pudo obtener el último ID insertado.');
             res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
         }
     } catch (error) {
