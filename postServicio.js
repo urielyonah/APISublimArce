@@ -18,12 +18,18 @@ router.post('/', async (req, res) => {
         // Insertar en la tabla SERVICIOS
         const idServicioInsertado = await insertarServicio(con, res, idCamisa, servicio, tamano, calidad, area, precio, imagen);
 
-        // Insertar en la tabla CAMISAS-SERVICIOS
-        await insertarCamisasServicios(con, res, idCamisa, idServicioInsertado, precio);
+        // Verifica si idServicioInsertado tiene un valor antes de proceder
+        if (idServicioInsertado) {
+            // Insertar en la tabla CAMISAS-SERVICIOS
+            await insertarCamisasServicios(con, res, idCamisa, idServicioInsertado, precio);
 
-        res.status(200).json({ 'ID-CAMISAS-SERVICIOS': idServicioInsertado, message: 'Agregado a pedidos con éxito' });
+            res.status(200).json({ 'ID-CAMISAS-SERVICIOS': idServicioInsertado, message: 'Agregado a CAMISAS-SERVICIOS con éxito' });
+        } else {
+            // Manejar el caso en que idServicioInsertado es undefined
+            res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
+        }
     } catch (error) {
-        console.error('Error al agregar a pedidos:', error);
+        console.error('Error al agregar a CAMISAS-SERVICIOS:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     } finally {
         if (con) {
@@ -31,6 +37,7 @@ router.post('/', async (req, res) => {
         }
     }
 });
+
 
 async function insertarServicio(con, res, idCamisa, tipo, tamano, calidad, area, precio, imagen) {
     const sql = `INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`)
