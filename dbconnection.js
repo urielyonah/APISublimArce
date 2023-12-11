@@ -9,7 +9,7 @@ class DataBase {
             database: 'bf9oexmvjv7umifwuwdu',
             charset: 'utf8',
         };
-       /* this.config = {
+        /*this.config = {
             host: 'localhost',
             user: 'uriel',
             password: '123456789',
