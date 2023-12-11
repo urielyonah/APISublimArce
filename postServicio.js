@@ -24,11 +24,14 @@ router.post('/', async (req, res) => {
                 [tipo, tamano, calidad, area, precio, imagen]
             );
 
-            // Obtener el último ID insertado
-            const resultsId = await con.query('SELECT LAST_INSERT_ID() AS insertId');
+            // Retrieve the ID of the recently inserted record based on the user-provided data
+            const resultsId = await con.query(
+                'SELECT `ID-SERVICIOS` FROM SERVICIOS WHERE `TIPO-SERVICIO` = ? AND `tamaño` = ? AND `calidad` = ? AND `AREA` = ? AND `PRECIO` = ? AND `IMAGEN` = ?',
+                [tipo, tamano, calidad, area, precio, imagen]
+            );
 
-            if (resultsInsert.affectedRows > 0 && resultsId.length > 0 && resultsId[0].insertId !== undefined) {
-                const idServicioInsertado = resultsId[0].insertId;
+            if (resultsInsert.affectedRows > 0 && resultsId.length > 0 && resultsId[0]['ID-SERVICIOS'] !== undefined) {
+                const idServicioInsertado = resultsId[0]['ID-SERVICIOS'];
                 console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', idServicioInsertado);
 
                 // Commit the transaction
@@ -56,3 +59,4 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
+
