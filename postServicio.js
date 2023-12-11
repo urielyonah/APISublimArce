@@ -41,14 +41,19 @@ async function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen
 
     try {
         const results = await con.query(sql, [tipo, tamano, calidad, area, precio, imagen]);
-        const idServicioInsertado = results.insertId;
-
-        console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', idServicioInsertado);
-
-        return idServicioInsertado;
+        
+        if (results.affectedRows > 0) {
+            const idServicioInsertado = results.insertId;
+            console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', idServicioInsertado);
+            return idServicioInsertado;
+        } else {
+            console.error('Error en la inserción en SERVICIOS. No se afectaron filas.');
+            console.error('Detalles del error:', results.message);
+            return null;
+        }
     } catch (error) {
         console.error('Error al insertar servicio:', error);
-        throw error; // Para que el error se propague y sea manejado en el bloque catch del controlador principal
+        throw error;
     }
 }
 
