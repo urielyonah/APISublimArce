@@ -54,6 +54,7 @@ async function insertarServicio(con, res, idCamisa, tipo, tamano, calidad, area,
     }
 }
 
+
 async function insertarCamisasServicios(con, res, idCamisa, idServicio, precio) {
     const sql = `INSERT INTO \`CAMISAS-SERVICIOS\` (\`ID-CAMISAS\`, \`ID-SERVICIOS\`, \`PRECIO\`) VALUES (?, ?, ?)`;
 
