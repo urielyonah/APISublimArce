@@ -40,15 +40,15 @@ async function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen
     VALUES (?, ?, ?, ?, ?, ?)`;
 
     try {
-        const results = await con.query(sql, [tipo, tamano, calidad, area, precio, imagen]);
-        
-        if (results.affectedRows > 0) {
-            const idServicioInsertado = results.insertId;
+        await con.query(sql, [tipo, tamano, calidad, area, precio, imagen]);
+        const results = await con.query('SELECT LAST_INSERT_ID() AS id');
+
+        if (results.length > 0) {
+            const idServicioInsertado = results[0].id;
             console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', idServicioInsertado);
             return idServicioInsertado;
         } else {
-            console.error('Error en la inserción en SERVICIOS. No se afectaron filas.');
-            console.error('Detalles del error:', results.message);
+            console.error('Error al obtener el último ID insertado.');
             return null;
         }
     } catch (error) {
