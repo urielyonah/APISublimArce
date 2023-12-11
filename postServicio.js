@@ -19,10 +19,10 @@ router.post('/', async (req, res) => {
         const idServicioInsertado = await insertarServicio(con, tipo, tamano, calidad, area, precio, imagen);
 
         // Verificar si idServicioInsertado tiene un valor antes de proceder
-        if (idServicioInsertado) {
+        if (idServicioInsertado !== null) {
             res.status(200).json({ 'ID-SERVICIOS': idServicioInsertado, message: 'Agregado a SERVICIOS con éxito' });
         } else {
-            // Manejar el caso en que idServicioInsertado es undefined
+            // Manejar el caso en que idServicioInsertado es null
             res.status(500).json({ error: 'Error interno del servidor al insertar servicio' });
         }
     } catch (error) {
@@ -56,6 +56,5 @@ async function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen
         throw error;
     }
 }
-
 
 module.exports = router;
