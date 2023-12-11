@@ -37,31 +37,26 @@ router.post('/', async (req, res) => {
 
 async function insertarServicio(con, tipo, tamano, calidad, area, precio, imagen) {
     const sql = `INSERT INTO SERVICIOS (\`TIPO-SERVICIO\`, \`tamaño\`, \`calidad\`, \`AREA\`, \`PRECIO\`, \`IMAGEN\`)
-    VALUES (?, ?, ?, ?, ?, ?)`;
+VALUES (?, ?, ?, ?, ?, ?)`;
 
-    try {
-        const results = await con.query(sql, [tipo, tamano, calidad, area, precio, imagen]);
-        
-        if (results.affectedRows > 0) {
-            console.log('Inserción exitosa en SERVICIOS. Filas afectadas:', results.affectedRows);
-            
-            // Obtener el último ID insertado directamente desde el objeto results
-            const idServicioInsertado = results.insertId;
-            if (idServicioInsertado !== undefined) {
-                console.log('ID del último insertado:', idServicioInsertado);
-                return idServicioInsertado;
-            } else {
-                console.error('No se pudo obtener el ID del último insertado desde el objeto results.');
-                return null;
-            }
-        } else {
-            console.error('Error en la inserción en SERVICIOS. No se afectaron filas.');
-            return null;
-        }
-    } catch (error) {
-        console.error('Error al insertar servicio:', error);
-        throw error;
+try {
+    const results = await con.query(sql, [tipo, tamano, calidad, area, precio, imagen]);
+
+    if (results.affectedRows > 0) {
+        // Obtén el último ID insertado directamente desde la base de datos
+        const idServicioInsertado = await con.query('SELECT LAST_INSERT_ID() as id');
+        const lastInsertId = idServicioInsertado[0].id;
+
+        console.log('Inserción exitosa en SERVICIOS. ID del último insertado:', lastInsertId);
+        return lastInsertId;
+    } else {
+        console.error('Error en la inserción en SERVICIOS. No se afectaron filas.');
+        return null;
     }
+} catch (error) {
+    console.error('Error al insertar servicio:', error);
+    throw error;
+}
 }
 
 module.exports = router;
