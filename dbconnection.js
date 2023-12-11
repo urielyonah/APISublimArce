@@ -9,6 +9,14 @@ class DataBase {
             database: 'bf9oexmvjv7umifwuwdu',
             charset: 'utf8',
         };
+       /* this.config = {
+            host: 'localhost',
+            user: 'uriel',
+            password: '123456789',
+            database: 'sublimarce01',
+            charset: 'utf8',
+        }*/
+
         this.connection = mysql.createConnection(this.config);
     }
 
