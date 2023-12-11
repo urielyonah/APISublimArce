@@ -9,7 +9,7 @@ router.post('/', (req, res) => {
     const { idcamisas, idservicio, precio } = req.body;
 
     const sql =
-        `INSERT INTO \`CAMISAS-SERVICIOS\` (\`ID-CAMISAS\`, \`ID-SERVICIO\`, \`PRECIO\`) VALUES (?, ?, ?)`;
+        `INSERT INTO \`CAMISAS-SERVICIOS\` (\`ID-CAMISAS\`, \`ID-SERVICIOS\`, \`PRECIO\`) VALUES (?, ?, ?)`;
 
     con.query(sql, [idcamisas, idservicio, precio], (err, results) => {
         if (err) {
