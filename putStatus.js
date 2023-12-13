@@ -7,16 +7,18 @@ const db = new DataBase();
 router.put('/', (req, res) => {
     
     const pedidoIds = req.body.pedidoIds;
+    const FECHA_COTIZACION = req.body.fecha;
 
     const con = db.dbconnection();
     const nuevoEstado = 'PENDIENTE'; // Reemplaza 'NUEVO ESTADO' con el estado deseado
 
+
     // Generar un marcador de posición (?) para cada ID en la lista
     const placeholders = pedidoIds.map(() => '?').join(', ');
-    const sql = `UPDATE PEDIDOS SET STATUS = ? WHERE \`ID-PEDIDOS\` IN (${placeholders})`;
+    const sql = `UPDATE PEDIDOS SET STATUS = ?, FECHA_COTIZACION = ? WHERE \`ID-PEDIDOS\` IN (${placeholders})`;
     
     // Combina el nuevo estado con la lista de IDs
-    const values = [nuevoEstado, ...pedidoIds];
+    const values = [nuevoEstado, FECHA_COTIZACION, ...pedidoIds];
 
     con.query(sql, values, (err, results) => {
         if (err) {

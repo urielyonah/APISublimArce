@@ -10,10 +10,10 @@ router.post('/', (req, res) => {
     const cantidad = req.body.cantidad;
     const precio = req.body.precio;
     const userId = req.body.idcliente; // Asegúrate de que el nombre de la propiedad coincida con el frontend
-    const FECHA_COTIZACION = req.body.fecha;
+    
 
     const sql = `INSERT INTO PEDIDOS (\`ID-CAMISAS-SERVICIOS\`, \`ID-PRODUCTOS\`, \`CANTIDAD\`, \`PRECIO\`, \`STATUS\`, \`ID-CLIENTE\`, \`FECHA_COTIZACION\`, \`FECHA_COMPLETADO\`)
-  VALUES (NULL, '${idproducto}', '${cantidad}', '${precio}', 'EN CARRITO', '${userId}', '${FECHA_COTIZACION}', NULL);`;
+  VALUES (NULL, '${idproducto}', '${cantidad}', '${precio}', 'EN CARRITO', '${userId}', NULL, NULL);`;
 
 
     con.query(sql, (err, results) => {
